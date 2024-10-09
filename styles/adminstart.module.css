@@ -1,0 +1,46 @@
+/* adminstart.module.css */
+
+/* adminstart.module.css */
+
+.adminPage {
+    display: flex;
+}
+
+.pageContent {
+    margin-left: 250px;
+    /* Espacio cuando el sidebar está expandido */
+    padding: 2rem;
+    transition: margin-left 0.3s ease;
+    /* Transición suave cuando el sidebar se colapsa */
+}
+
+.adminPage .collapsed+.pageContent {
+    margin-left: 80px;
+    /* Margen cuando el sidebar está colapsado */
+}
+
+
+.toggleButton {
+    position: fixed;
+    top: 10px;
+    /* Posición fija, flotante */
+    left: 10px;
+    /* Cercano al borde izquierdo */
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1100;
+    /* Asegurarse de que esté por encima del sidebar */
+}
+
+.toggleButton:hover {
+    background-color: #555;
+}
+
+/* Si el sidebar está oculto, la página principal ocupa todo el ancho */
+.adminPage .pageContent {
+    margin-left: 0;
+}
