@@ -3,11 +3,10 @@ import { useRouter } from 'next/router';
 import Head from "next/head";
 import Image from "next/image";
 import localFont from "next/font/local";
-import { IoIosHelpCircle } from "react-icons/io";
-import { RiArrowDropDownLine } from "react-icons/ri";
+//import { IoIosHelpCircle } from "react-icons/io";
+//import { RiArrowDropDownLine } from "react-icons/ri";
 
-<<<<<<< HEAD
-=======
+
 const geistSans = localFont({
     src: "./fonts/GeistVF.woff",
     variable: "--font-geist-sans",
@@ -19,7 +18,7 @@ const geistMono = localFont({
     weight: "100 900",
 });
 
->>>>>>> 96d2a3c03d3890ed0c98aa10242252c60d5b1e0b
+
 export default function Home() {
     return (
         <>
