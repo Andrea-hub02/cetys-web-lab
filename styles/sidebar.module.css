@@ -1,0 +1,92 @@
+/* sidebar.module.css */
+
+.sidebar {
+    width: 250px;
+    /* Ancho completo del sidebar */
+    height: 100vh;
+    /* Ocupa toda la altura de la pantalla */
+    background-color: #f8f9fa;
+    /* Color de fondo claro */
+    padding: 1rem;
+    position: fixed;
+    /* Fijo en el lado izquierdo */
+    top: 0;
+    left: 0;
+    z-index: 1001;
+    /* Mayor prioridad para estar encima del header */
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    /* Sombra para dar profundidad */
+    transition: width 0.3s ease;
+    /* Transición suave al colapsar */
+    justify-content: space-between;
+    /* Para que el botón de engranaje esté al fondo */
+}
+
+.collapsed {
+    width: 80px;
+    /* Ancho reducido cuando está colapsado */
+}
+
+.logoContainer {
+    text-align: center;
+    /* Centra el logo */
+    margin-bottom: 2rem;
+    /* Espacio debajo del logo */
+}
+
+.collapseButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-left: auto;
+    /* Alinea la flecha a la derecha */
+    margin-right: auto;
+    font-size: 1.5rem;
+    /* Tamaño de la flecha */
+    color: #333;
+}
+
+.sidebarBtn {
+    background-color: #f0f0f0;
+    /* Fondo de los botones */
+    color: #333;
+    border: 1px solid #ddd;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    /* Alinea iconos y texto verticalmente */
+    transition: background-color 0.3s, transform 0.3s;
+    cursor: pointer;
+}
+
+.sidebarBtn:hover {
+    background-color: #e0e0e0;
+    /* Fondo más oscuro en hover */
+    transform: translateY(-2px);
+    /* Movimiento suave hacia arriba */
+}
+
+/* Icono de engranaje al fondo del sidebar */
+.settingsButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #333;
+    font-size: 1.5rem;
+    /* Tamaño del icono */
+    align-self: center;
+    /* Centra el icono horizontalmente */
+    margin-top: auto;
+    /* Empuja el icono hacia el fondo */
+    margin-bottom: 1rem;
+}
+
+.settingsButton:hover {
+    color: #555;
+    /* Cambia de color en hover */
+}
