@@ -2,6 +2,7 @@ import Image from "next/image";
 import { FaTasks, FaBell, FaWrench, FaCog } from 'react-icons/fa'; // Agregamos FaCog para el icono de engranaje
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'; // Importamos flechas para colapsar/expandir
 import styles from '../styles/sidebar.module.css'; // Archivo CSS para los estilos del sidebar
+import Link from "next/link";
 
 interface SidebarProps {
     isCollapsed: boolean;
@@ -29,15 +30,24 @@ export default function Sidebar({ isCollapsed, toggleSidebar }: SidebarProps) {
             {/* Botones del sidebar, ocultos si está colapsado */}
             {!isCollapsed && (
                 <>
-                    <button className={styles.sidebarBtn}>
-                        <FaTasks style={{ marginRight: '8px' }} /> Catálogo
-                    </button>
-                    <button className={styles.sidebarBtn}>
-                        <FaBell style={{ marginRight: '8px' }} /> Notificaciones
-                    </button>
-                    <button className={styles.sidebarBtn}>
-                        <FaWrench style={{ marginRight: '8px' }} /> Mantenimiento
-                    </button>
+                    <Link href="/Catalogo" passHref>
+                        <button className={styles.sidebarBtn}> {/* Cambiado a botón sin envoltorio a */}
+                            <FaTasks style={{ marginRight: '8px' }} /> Catálogo
+                        </button>
+                    </Link>
+
+                    <Link href="/Notificaciones" passHref>
+                        <button className={styles.sidebarBtn}> {/* Cambiado a botón sin envoltorio a */}
+                            <FaBell style={{ marginRight: '8px' }} /> Notificaciones
+                        </button>
+                    </Link>
+
+                    <Link href="/Mantenimiento" passHref>
+                        <button className={styles.sidebarBtn}> {/* Cambiado a botón sin envoltorio a */}
+                            <FaWrench style={{ marginRight: '8px' }} /> Mantenimiento
+                        </button>
+                    </Link>
+
                 </>
             )}
 

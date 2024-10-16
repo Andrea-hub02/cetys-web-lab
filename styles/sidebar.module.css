@@ -62,6 +62,10 @@
     /* Alinea iconos y texto verticalmente */
     transition: background-color 0.3s, transform 0.3s;
     cursor: pointer;
+    justify-content: flex-start;
+    width: 100%; /* Asegúrate de que el botón ocupe todo el ancho */
+    text-decoration: none; /* Esto asegura que no haya subrayado */
+    color: black;
 }
 
 .sidebarBtn:hover {

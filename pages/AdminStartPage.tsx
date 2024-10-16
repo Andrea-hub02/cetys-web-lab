@@ -12,10 +12,6 @@ const AdminStartPage = () => {
 
     return (
         <div className={styles.adminPage}>
-            <Header isAdminPage={true} /> {/* El Header permanece */}
-
-            {/* Sidebar con la opción de contraerse */}
-            <Sidebar isCollapsed={isSidebarCollapsed} toggleSidebar={toggleSidebar} />
 
             <div className={styles.pageContent}>
                 <h1>Bienvenido al panel de administración</h1>
