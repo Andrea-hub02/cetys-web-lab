@@ -13,17 +13,6 @@ export default function Header({ isAdminPage }: HeaderProps) {
             <div className={styles.LHeaderContent}>
                 {!isAdminPage && (
                     <div className={styles.dropdown}>
-                        <button className={styles.dropbtn}>
-                            Laboratorio <RiArrowDropDownLine size={20} />
-                        </button>
-                        <div className={styles['dropdown-content']}>
-                            <a href="#">Manofactura</a>
-                            <a href="#">Electronica</a>
-                            <a href="#">Mecatronica</a>
-                            <a href="#">Renovables</a>
-                            <a href="#">Metodos</a>
-                            <a href="#">Fisica</a>
-                        </div>
                     </div>
                 )}
             </div>

@@ -1,13 +1,24 @@
 import React, { useState } from 'react';
 import { FaPlus } from 'react-icons/fa'; // Importa el ícono de "+"
-
+import styles from '../styles/catalogo.module.css';
 
 const Catalogo = () => {
   const [selectedLab, setSelectedLab] = useState('');
   const [selectedTool, setSelectedTool] = useState('');
+  const [showPopup, setShowPopup] = useState(false); // Estado para controlar la visibilidad del pop-up
 
   const laboratorios = ['Manofactura', 'Electronica', 'Mecatronica', 'Renovables', 'Metodos', 'Fisica'];
   const herramientas = ['Herramienta 1', 'Herramienta 2', 'Herramienta 3'];
+  
+  const togglePopup = () => {
+    setShowPopup(!showPopup); // Cambia el estado del pop-up
+  };
+
+  // Maneja la acción de "Agregar producto"
+  const handleAddProduct = (e: React.FormEvent) => {
+    e.preventDefault(); // Evita que la página se recargue
+    setShowPopup(false);
+  };
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,42 +30,81 @@ const Catalogo = () => {
       {/* Botón "Agregar producto" */}
       <button 
         type="button" 
-        style={{ 
-            padding: '12px 20px', 
-            borderRadius: '6px', 
-            background: '#4CAF50',  /* Color del botón */
-            color: 'white', 
-            border: 'none', 
-            fontSize: '16px', 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: '8px',  /* Espacio entre el ícono y el texto */
-            position: 'absolute',  /* Coloca el botón en la parte superior derecha */
-            top: '-88px', 
-            right: '-295px' 
-        }}
-        onClick={() => { /* Acción al hacer clic en "Agregar producto" */ }}
-        >
-        <FaPlus />  {/* Ícono de "+" */}
+        className={styles.addProductBtn}
+        onClick={togglePopup} // Abre el pop-up al hacer clic
+      >
+        <FaPlus /> {/* Ícono de "+" */}
         Agregar producto
-        </button>
+      </button>
+
+      {/* Pop-up */}
+      {showPopup && (
+        <div className={styles.popupOverlay}>
+          <div className={styles.popupBox}>
+            <button className={styles.closeBtn} onClick={togglePopup}>X</button>
+            <h2>Agregar producto</h2>
+
+            {/* Formulario dentro del pop-up */}
+            <form className={styles.popupForm} onSubmit={handleAddProduct}>
+              <div className={styles.inputGroup}>
+                <label htmlFor="item">ITEM:</label>
+                <input type="text" id="item" name="item" />
+              </div>
+              <div className={styles.inputGroup}>
+                <label htmlFor="description">Descripción:</label>
+                <input type="text" id="description" name="description" />
+              </div>
+              <div className={styles.inputGroup}>
+                <label htmlFor="model">Modelo:</label>
+                <input type="text" id="model" name="model" />
+              </div>
+              <div className={styles.inputGroup}>
+                <label htmlFor="inventoryNumber">Núm. de inventario:</label>
+                <input type="text" id="inventoryNumber" name="inventoryNumber" />
+              </div>
+              <div className={styles.inputGroup}>
+                <label htmlFor="serialNumber">Núm. de serie:</label>
+                <input type="text" id="serialNumber" name="serialNumber" />
+              </div>
+              <div className={styles.inputGroup}>
+                <label htmlFor="state">Estado:</label>
+                <input type="text" id="state" name="state" />
+              </div>
+              <div className={styles.inputGroup}>
+                <label htmlFor="acquisition">Adquisición:</label>
+                <input type="text" id="acquisition" name="acquisition" />
+              </div>
+              <div className={styles.inputGroup}>
+                <label htmlFor="existence">Existencia:</label>
+                <input type="text" id="existence" name="existence" />
+              </div>
+              <div className={styles.inputGroup}>
+                <label htmlFor="note">Nota:</label>
+                <input type="text" id="note" name="note" />
+              </div>
+
+              <button type="submit" className={styles.submitBtn}>Agregar producto</button>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* Formulario de búsqueda */}
-      <form onSubmit={handleSearch} style={{ display: 'flex', gap: '20px', marginBottom: '30px', justifyContent: 'center', marginTop: '-200px' }}> {/* Subiendo aún más los botones */}
+      <form onSubmit={handleSearch} style={{ display: 'flex', gap: '20px', marginBottom: '30px', justifyContent: 'center', marginTop: '-250px' }}>
         {/* Input de búsqueda */}
         <input 
           type="text" 
-          placeholder="Buscar..."
-          style={{ padding: '12px', borderRadius: '6px', border: '1px solid #ccc', fontSize: '16px', width: '260px' }}
+          placeholder="Buscar..." 
+          className={styles.inputSearch} 
         />
 
         {/* Dropdown de laboratorios */}
         <select 
           value={selectedLab}
           onChange={(e) => setSelectedLab(e.target.value)}
-          style={{ padding: '12px', borderRadius: '6px', border: '1px solid #ccc', fontSize: '16px', width: '250px' }}
+          className={styles.dropdown}
         >
-          <option value="">Laboratorios</option>
+          
           {laboratorios.map((lab, index) => (
             <option key={index} value={lab}>
               {lab}
@@ -66,7 +116,7 @@ const Catalogo = () => {
         <select 
           value={selectedTool}
           onChange={(e) => setSelectedTool(e.target.value)}
-          style={{ padding: '12px', borderRadius: '6px', border: '1px solid #ccc', fontSize: '16px', width: '250px' }}
+          className={styles.dropdown}
         >
           <option value="">Herramientas</option>
           {herramientas.map((tool, index) => (
@@ -79,7 +129,7 @@ const Catalogo = () => {
         {/* Botón de búsqueda clickeable sin funcionalidad */}
         <button 
           type="button" 
-          style={{ padding: '12px 20px', borderRadius: '6px', background: '#4682B4', color: 'white', border: 'none', fontSize: '16px', width: '160px' }}
+          className={styles.searchBtn}
           onClick={() => { /* Acción vacía, botón solo clickeable */ }}
         >
           Buscar
