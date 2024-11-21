@@ -1,20 +1,17 @@
 .addProductBtn {
-    padding: 12px 20px;
-    border-radius: 6px;
-    background: #4CAF50; /* Color del botón */
-    color: white;
-    border: none;
-    font-size: 16px;
-    display: flex;
-    align-items: center;
-    gap: 8px; /* Espacio entre el ícono y el texto */
-    position: absolute; /* Coloca el botón en la parte superior derecha */
-    top: -88px;
-    right: -295px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra */
-    transform: translateY(0);
-    transition: transform 0.2s ease-in-out;
-  }
+  padding: 12px 20px;
+  border-radius: 6px;
+  background: #4CAF50; /* Color del botón */
+  color: white;
+  border: none;
+  font-size: 16px;
+  display: flex;
+  gap: 8px; /* Espacio entre el ícono y el texto */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra */
+  transform: translateY(0);
+  transition: transform 0.2s ease-in-out;
+}
+
   
   .addProductBtn:hover {
     transform: translateY(-3px); /* Efecto flotante al hacer hover */
@@ -48,7 +45,46 @@
     width: 350px;
     
   }
+ 
+  /*  ESTE SE MODIFICO */
+  .agregarB {
+    display: flex;
+    justify-content: flex-end;  /* Centra el contenido dentro del contenedor */
+    align-items: center;      /* Centra verticalmente */
+    
+    border-width: 2px;
+    padding: 0px;  /* Añade un poco de espacio alrededor */
+    position: relative;  /* Esto es importante para que los elementos dentro de él se posicionen de forma relativa */
+      /* Ajusta la altura según sea necesario */
+    margin-bottom: 50px;
+  }
 
+  /* ESTE SE MODIFICO */ 
+  .cont {
+    padding: 20px;
+    margin-left: 300px;
+    justify-content: flex-end;
+    position: 'relative';
+    
+  }
+
+  /* ESTE SE MODIFICO */
+  .searchContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+     /* Borde rojo */
+    padding: 0px; 
+    margin-bottom: 20px;
+  }
+
+  .dataTableContainer {
+    
+    margin-top: 10px; /* Añade un poco de espacio arriba */
+  
+  }
+
+  
 
 /* Pop-up */
 .popupOverlay {

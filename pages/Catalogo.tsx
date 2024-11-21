@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FaPlus } from 'react-icons/fa'; // Importa el ícono de "+"
 import styles from '../styles/catalogo.module.css';
+import DataTable from '@/components/DataTable';
 
 const Catalogo = () => {
   const [selectedLab, setSelectedLab] = useState('');
@@ -26,17 +27,19 @@ const Catalogo = () => {
   };
 
   return (
-    <div style={{ paddingTop: '0px', position: 'relative' }}> 
-      {/* Botón "Agregar producto" */}
-      <button 
-        type="button" 
-        className={styles.addProductBtn}
-        onClick={togglePopup} // Abre el pop-up al hacer clic
-      >
-        <FaPlus /> {/* Ícono de "+" */}
-        Agregar producto
-      </button>
-
+    <div className={styles.cont}> 
+      <div className={styles.agregarB}>
+        {/* Botón "Agregar producto" */}
+        <button 
+          type="button" 
+          className={styles.addProductBtn}
+          onClick={togglePopup} // Abre el pop-up al hacer clic
+        >
+          <FaPlus /> {/* Ícono de "+" */}
+          Agregar producto
+        </button>
+      </div> 
+      
       {/* Pop-up */}
       {showPopup && (
         <div className={styles.popupOverlay}>
@@ -46,6 +49,7 @@ const Catalogo = () => {
 
             {/* Formulario dentro del pop-up */}
             <form className={styles.popupForm} onSubmit={handleAddProduct}>
+              {/* Form inputs */}
               <div className={styles.inputGroup}>
                 <label htmlFor="item">ITEM:</label>
                 <input type="text" id="item" name="item" />
@@ -89,54 +93,62 @@ const Catalogo = () => {
         </div>
       )}
 
-      {/* Formulario de búsqueda */}
-      <form onSubmit={handleSearch} style={{ display: 'flex', gap: '20px', marginBottom: '30px', justifyContent: 'center', marginTop: '-250px' }}>
+      {/* Contenedor flex para los cuatro elementos */}
+      <div className={styles.searchContainer}>
         {/* Input de búsqueda */}
-        <input 
-          type="text" 
-          placeholder="Buscar..." 
-          className={styles.inputSearch} 
-        />
-
-        {/* Dropdown de laboratorios */}
-        <select 
-          value={selectedLab}
-          onChange={(e) => setSelectedLab(e.target.value)}
-          className={styles.dropdown}
-        >
-          
-          {laboratorios.map((lab, index) => (
-            <option key={index} value={lab}>
-              {lab}
-            </option>
-          ))}
-        </select>
-
-        {/* Dropdown de herramientas */}
-        <select 
-          value={selectedTool}
-          onChange={(e) => setSelectedTool(e.target.value)}
-          className={styles.dropdown}
-        >
-          <option value="">Herramientas</option>
-          {herramientas.map((tool, index) => (
-            <option key={index} value={tool}>
-              {tool}
-            </option>
-          ))}
-        </select>
-
-        {/* Botón de búsqueda clickeable sin funcionalidad */}
-        <button 
-          type="button" 
-          className={styles.searchBtn}
-          onClick={() => { /* Acción vacía, botón solo clickeable */ }}
-        >
-          Buscar
-        </button>
-      </form>
-
-      {/* Aquí iría la tabla para mostrar los datos cargados desde la base de datos */}
+        <div>
+          <input 
+            type="text" 
+            placeholder="Buscar..." 
+            className={styles.inputSearch} 
+          />
+        </div>
+        <div>
+          {/* Dropdown de laboratorios */}
+          <select 
+            value={selectedLab}
+            onChange={(e) => setSelectedLab(e.target.value)}
+            className={styles.dropdown}
+          >
+            {laboratorios.map((lab, index) => (
+              <option key={index} value={lab}>
+                {lab}
+              </option>
+            ))}
+          </select> 
+        </div>
+        <div>
+          {/* Dropdown de herramientas */}
+          <select 
+            value={selectedTool}
+            onChange={(e) => setSelectedTool(e.target.value)}
+            className={styles.dropdown}
+          >
+            <option value="">Herramientas</option>
+            {herramientas.map((tool, index) => (
+              <option key={index} value={tool}>
+                {tool}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div>
+          {/* Botón de búsqueda */}
+          <button 
+            type="button" 
+            className={styles.searchBtn}
+            onClick={() => { /* Acción vacía, botón solo clickeable */ }}
+          >
+            Buscar
+          </button>
+        </div>
+        
+      </div>
+      {/* AQUI VA LA TABLA IMPORTADA  */}
+      <div className={styles.dataTableContainer}>
+        <DataTable></DataTable>
+      </div>
+      
     </div>
   );
 };
