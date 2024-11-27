@@ -32,6 +32,7 @@ Finally, open the project folder in Visual Studio Code, and run the following to
 npm run dev
 ```
 
+
 Open the link provided by the terminal, usually beginning by [http://localhost:](http://localhost:)
 
 You are good to go!
