@@ -12,6 +12,23 @@
   transition: transform 0.2s ease-in-out;
 }
 
+  /* Borde rojo border: 2px solid red !important;*/
+  .popupForm {
+    display: flex;
+    height: 60vh;  
+    flex-wrap: wrap;
+    justify-content: space-between; /* O space-around/space-evenly */
+    align-items: center;
+    gap: 10px; 
+
+  }
+
+  .popupInput {
+    flex-grow: 1; /* Hace que cada hijo crezca y ocupe el espacio disponible */
+    padding: 10px; /* Añadir algo de espacio dentro de los elementos */
+    text-align: center; /* Centrar el texto */
+    
+  }
   
   .addProductBtn:hover {
     transform: translateY(-3px); /* Efecto flotante al hacer hover */
@@ -81,6 +98,7 @@
   .dataTableContainer {
     
     margin-top: 10px; /* Añade un poco de espacio arriba */
+    
   
   }
 
@@ -125,11 +143,7 @@
     cursor: pointer;
   }
   
-  .popupForm {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-  }
+  
 
   .inputGroup {
     display: flex;
@@ -163,3 +177,12 @@
     background-color: #45a049;
   }
   
+
+
+  /*
+  .popupForm {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  */

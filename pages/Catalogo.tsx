@@ -1,154 +1,211 @@
 import React, { useState } from 'react';
-import { FaPlus } from 'react-icons/fa'; // Importa el ícono de "+"
+import { FaPlus } from 'react-icons/fa';
 import styles from '../styles/catalogo.module.css';
 import DataTable from '@/components/DataTable';
+import { ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 
 const Catalogo = () => {
   const [selectedLab, setSelectedLab] = useState('');
   const [selectedTool, setSelectedTool] = useState('');
-  const [showPopup, setShowPopup] = useState(false); // Estado para controlar la visibilidad del pop-up
+  const [searchTerm, setSearchTerm] = useState('');
+  const [showPopup, setShowPopup] = useState(false);
+
+  const [rows, setRows] = useState([
+    {
+      id: 1,
+      ID_Material: 101,
+      ITEM: 'A001',
+      ID_Laboratorio: 'Manofactura',
+      DESCRIPCION: 'Microscopio Óptico',
+      MODELO: 'BX53',
+      No_SERIE: '12345',
+      No_INVENTARIO: 'INV-001',
+      ESTADO: 'Activo',
+      ADQUISICION: '2020-05-10',
+      EXISTENCIA: 10,
+      No_PRESTAMO: 5,
+      UBICACION: 'Almacén 1',
+      IMAGEN: 'imagen1.png',
+    },
+  ]);
+
+  const [newProduct, setNewProduct] = useState({
+    ID_Material: '',
+    ITEM: '',
+    ID_Laboratorio: '',
+    DESCRIPCION: '',
+    MODELO: '',
+    No_SERIE: '',
+    No_INVENTARIO: '',
+    ESTADO: '',
+    ADQUISICION: '',
+    EXISTENCIA: '',
+    No_PRESTAMO: '',
+    UBICACION: '',
+    IMAGEN: '',
+  });
 
   const laboratorios = ['Manofactura', 'Electronica', 'Mecatronica', 'Renovables', 'Metodos', 'Fisica'];
   const herramientas = ['Herramienta 1', 'Herramienta 2', 'Herramienta 3'];
-  
-  const togglePopup = () => {
-    setShowPopup(!showPopup); // Cambia el estado del pop-up
+
+  const togglePopup = () => setShowPopup(!showPopup);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setNewProduct((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Maneja la acción de "Agregar producto"
   const handleAddProduct = (e: React.FormEvent) => {
-    e.preventDefault(); // Evita que la página se recargue
+    e.preventDefault();
+
+    const formattedProduct = {
+      ...newProduct,
+      ID_Material: parseInt(newProduct.ID_Material, 10) || 0,
+      EXISTENCIA: parseInt(newProduct.EXISTENCIA, 10) || 0,
+      No_PRESTAMO: parseInt(newProduct.No_PRESTAMO, 10) || 0,
+    };
+
+    setRows((prevRows) => [...prevRows, { id: prevRows.length + 1, ...formattedProduct }]);
     setShowPopup(false);
+
+    // Resetear formulario
+    setNewProduct({
+      ID_Material: '',
+      ITEM: '',
+      ID_Laboratorio: '',
+      DESCRIPCION: '',
+      MODELO: '',
+      No_SERIE: '',
+      No_INVENTARIO: '',
+      ESTADO: '',
+      ADQUISICION: '',
+      EXISTENCIA: '',
+      No_PRESTAMO: '',
+      UBICACION: '',
+      IMAGEN: '',
+    });
   };
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Buscar...');
+    console.log('Buscar:', searchTerm);
   };
 
+  const filteredData = rows.filter((row) => {
+    const matchesLab = selectedLab ? row.ID_Laboratorio.includes(selectedLab) : true;
+    const matchesTool = selectedTool ? row.ITEM.includes(selectedTool) : true;
+    const matchesSearch = searchTerm
+      ? row.DESCRIPCION.toLowerCase().includes(searchTerm.toLowerCase())
+      : true;
+    return matchesLab && matchesTool && matchesSearch;
+  });
+
   return (
-    <div className={styles.cont}> 
+    <div className={styles.cont}>
       <div className={styles.agregarB}>
-        {/* Botón "Agregar producto" */}
-        <button 
-          type="button" 
-          className={styles.addProductBtn}
-          onClick={togglePopup} // Abre el pop-up al hacer clic
-        >
-          <FaPlus /> {/* Ícono de "+" */}
+        <button type="button" className={styles.addProductBtn} onClick={togglePopup}>
+          <FaPlus />
           Agregar producto
         </button>
-      </div> 
-      
-      {/* Pop-up */}
+      </div>
+
       {showPopup && (
         <div className={styles.popupOverlay}>
           <div className={styles.popupBox}>
-            <button className={styles.closeBtn} onClick={togglePopup}>X</button>
+            <button className={styles.closeBtn} onClick={togglePopup}>
+              X
+            </button>
             <h2>Agregar producto</h2>
-
-            {/* Formulario dentro del pop-up */}
             <form className={styles.popupForm} onSubmit={handleAddProduct}>
-              {/* Form inputs */}
-              <div className={styles.inputGroup}>
-                <label htmlFor="item">ITEM:</label>
-                <input type="text" id="item" name="item" />
+              {[
+                { name: 'ID_Material', placeholder: 'ID Material', type: 'text' },
+                { name: 'ITEM', placeholder: 'Item', type: 'text' },
+                { name: 'DESCRIPCION', placeholder: 'Descripción', type: 'text' },
+                { name: 'MODELO', placeholder: 'Modelo', type: 'text' },
+                { name: 'No_SERIE', placeholder: 'No. Serie', type: 'text' },
+                { name: 'No_INVENTARIO', placeholder: 'No. Inventario', type: 'text' },
+                { name: 'ESTADO', placeholder: 'Estado', type: 'text' },
+                { name: 'ADQUISICION', placeholder: 'Fecha de adquisición', type: 'date' },
+                { name: 'EXISTENCIA', placeholder: 'Existencia', type: 'number' },
+                { name: 'No_PRESTAMO', placeholder: 'No. Préstamo', type: 'number' },
+                { name: 'UBICACION', placeholder: 'Ubicación', type: 'text' },
+                { name: 'IMAGEN', placeholder: 'Imagen (URL)', type: 'text' },
+              ].map((field, index) => (
+                <input
+                  key={index}
+                  type={field.type}
+                  name={field.name}
+                  placeholder={field.placeholder}
+                  value={(newProduct as any)[field.name]}
+                  onChange={handleInputChange}
+                  required={field.name !== 'IMAGEN' && field.name !== 'MODELO'}
+                  className={styles.popupInput}
+                />
+              ))}
+              <select
+                name="ID_Laboratorio"
+                value={newProduct.ID_Laboratorio}
+                onChange={handleInputChange}
+                required
+              >
+                
+                {laboratorios.map((lab, index) => (
+                  <option key={index} value={lab}>
+                    {lab}
+                  </option>
+                ))}
+              </select>
+              <div>
+                <button type="submit" className={styles.submitBtn}>
+                  Agregar producto
+                </button>
               </div>
-              <div className={styles.inputGroup}>
-                <label htmlFor="description">Descripción:</label>
-                <input type="text" id="description" name="description" />
-              </div>
-              <div className={styles.inputGroup}>
-                <label htmlFor="model">Modelo:</label>
-                <input type="text" id="model" name="model" />
-              </div>
-              <div className={styles.inputGroup}>
-                <label htmlFor="inventoryNumber">Núm. de inventario:</label>
-                <input type="text" id="inventoryNumber" name="inventoryNumber" />
-              </div>
-              <div className={styles.inputGroup}>
-                <label htmlFor="serialNumber">Núm. de serie:</label>
-                <input type="text" id="serialNumber" name="serialNumber" />
-              </div>
-              <div className={styles.inputGroup}>
-                <label htmlFor="state">Estado:</label>
-                <input type="text" id="state" name="state" />
-              </div>
-              <div className={styles.inputGroup}>
-                <label htmlFor="acquisition">Adquisición:</label>
-                <input type="text" id="acquisition" name="acquisition" />
-              </div>
-              <div className={styles.inputGroup}>
-                <label htmlFor="existence">Existencia:</label>
-                <input type="text" id="existence" name="existence" />
-              </div>
-              <div className={styles.inputGroup}>
-                <label htmlFor="note">Nota:</label>
-                <input type="text" id="note" name="note" />
-              </div>
-
-              <button type="submit" className={styles.submitBtn}>Agregar producto</button>
             </form>
           </div>
         </div>
       )}
 
-      {/* Contenedor flex para los cuatro elementos */}
       <div className={styles.searchContainer}>
-        {/* Input de búsqueda */}
-        <div>
-          <input 
-            type="text" 
-            placeholder="Buscar..." 
-            className={styles.inputSearch} 
-          />
-        </div>
-        <div>
-          {/* Dropdown de laboratorios */}
-          <select 
-            value={selectedLab}
-            onChange={(e) => setSelectedLab(e.target.value)}
-            className={styles.dropdown}
-          >
-            {laboratorios.map((lab, index) => (
-              <option key={index} value={lab}>
-                {lab}
-              </option>
-            ))}
-          </select> 
-        </div>
-        <div>
-          {/* Dropdown de herramientas */}
-          <select 
-            value={selectedTool}
-            onChange={(e) => setSelectedTool(e.target.value)}
-            className={styles.dropdown}
-          >
-            <option value="">Herramientas</option>
-            {herramientas.map((tool, index) => (
-              <option key={index} value={tool}>
-                {tool}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          {/* Botón de búsqueda */}
-          <button 
-            type="button" 
-            className={styles.searchBtn}
-            onClick={() => { /* Acción vacía, botón solo clickeable */ }}
-          >
-            Buscar
-          </button>
-        </div>
-        
+        <input
+          type="text"
+          placeholder="Buscar..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className={styles.inputSearch}
+        />
+        <select
+          value={selectedLab}
+          onChange={(e) => setSelectedLab(e.target.value)}
+          className={styles.dropdown}
+        >
+          <option value="">Laboratorios</option>
+          {laboratorios.map((lab, index) => (
+            <option key={index} value={lab}>
+              {lab}
+            </option>
+          ))}
+        </select>
+        <select
+          value={selectedTool}
+          onChange={(e) => setSelectedTool(e.target.value)}
+          className={styles.dropdown}
+        >
+          <option value="">Herramientas</option>
+          {herramientas.map((tool, index) => (
+            <option key={index} value={tool}>
+              {tool}
+            </option>
+          ))}
+        </select>
+        <button type="button" className={styles.searchBtn} onClick={handleSearch}>
+          Buscar
+        </button>
       </div>
-      {/* AQUI VA LA TABLA IMPORTADA  */}
+
       <div className={styles.dataTableContainer}>
-        <DataTable></DataTable>
+        <DataTable data={filteredData} />
       </div>
-      
     </div>
   );
 };

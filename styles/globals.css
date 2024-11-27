@@ -11,11 +11,7 @@
   --gradient-end: #FBB03B;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+
 
 *::selection {
   background: var(--primary);
@@ -309,3 +305,12 @@ html {
     max-width: 100%;
     height: auto;
 }
+
+/*
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+*/
