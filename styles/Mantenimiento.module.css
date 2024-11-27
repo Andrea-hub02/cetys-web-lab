@@ -1,0 +1,188 @@
+.mainContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+}
+
+.createdContainer{
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 10px;
+}
+
+.tablaContainer {
+    margin-top: 20px;
+    overflow-x: auto; /* Permitir scroll horizontal en caso de ser necesario */
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+.tabla {
+    width: 100%;
+    border-collapse: collapse; /* Elimina espacio entre celdas */
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.tabla th {
+    background-color: #f7d118; /* Color principal para el encabezado */
+    color: bl;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 12px 10px;
+    text-align: center;
+    border-bottom: 2px solid #ddd;
+}
+
+.tabla td {
+    text-align: center;
+    padding: 12px 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.tabla tr:nth-child(even) {
+    background-color: #f9f9f9; /* Color alterno para filas pares */
+}
+
+.tabla tr:hover {
+    background-color: #f1f1f1; /* Resaltar fila al pasar el mouse */
+}
+
+.tabla th:first-child,
+.tabla td:first-child {
+    border-left: none;
+}
+
+.tabla th:last-child,
+.tabla td:last-child {
+    border-right: none;
+}
+
+.calendarButton {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #f7d118;
+    color: black;
+    border: 0.5px solid black;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.calendarPopup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    border-radius: 10px;
+}
+
+.closeButton {
+    background-color: #f7d118;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.highlight {
+    position: relative; /* Posiciona el punto relativo al número */
+}
+
+.highlight::after {
+    content: ""; /* Crea el punto */
+    position: absolute;
+    bottom: 5px; /* Coloca el punto justo debajo del número */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px; /* Tamaño del punto */
+    height: 6px; /* Igual que el ancho */
+    background-color: #f7d118; /* Color del punto */
+    border-radius: 50%; /* Hacerlo redondo */
+    border: 0.1px solid black; /* Agrega un borde negro para contraste */
+}
+
+.mantenimientoButton {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #f7d118;
+    color: black;
+    border: 0.5px solid black;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.popup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    z-index: 1000;
+    width: 300px;
+    cursor: grab;
+}
+
+.popup:active {
+    cursor: grabbing;
+}
+
+.inputField {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.searchButton {
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
+.materialInfo {
+    margin-top: 20px;
+}
+
+.estado {
+    margin: 10px 0;
+}
+
+.progresoContainer {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.progresoBarra {
+    width: 100%;
+    height: 20px;
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.progreso {
+    height: 100%;
+    background-color: #4caf50; /* Color de la barra de progreso */
+    width: 0; /* Se ajustará dinámicamente */
+    transition: width 0.3s ease-in-out; /* Animación suave */
+}
