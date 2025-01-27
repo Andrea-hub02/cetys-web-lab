@@ -4,6 +4,14 @@ import styles from '../styles/catalogo.module.css';
 import DataTable from '@/components/DataTable';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import Button from '@mui/material/Button';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import { SelectChangeEvent } from '@mui/material';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+
 
 const Catalogo = () => {
   const [selectedLab, setSelectedLab] = useState('');
@@ -51,7 +59,7 @@ const Catalogo = () => {
 
   const togglePopup = () => setShowPopup(!showPopup);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement> | SelectChangeEvent<string>) => {
     const { name, value } = e.target;
     setNewProduct((prev) => ({ ...prev, [name]: value }));
   };
@@ -114,8 +122,8 @@ const Catalogo = () => {
         <div className={styles.popupOverlay}>
           <div className={styles.popupBox}>
             <button className={styles.closeBtn} onClick={togglePopup}>
-              X
-            </button>
+            <HighlightOffIcon sx={{ fontSize: 40 }} /> 
+              </button>
             <h2>Agregar producto</h2>
             <form className={styles.popupForm} onSubmit={handleAddProduct}>
               {[
@@ -132,7 +140,7 @@ const Catalogo = () => {
                 { name: 'UBICACION', placeholder: 'Ubicación', type: 'text' },
                 { name: 'IMAGEN', placeholder: 'Imagen (URL)', type: 'text' },
               ].map((field, index) => (
-                <input
+                <input 
                   key={index}
                   type={field.type}
                   name={field.name}
@@ -143,26 +151,31 @@ const Catalogo = () => {
                   className={styles.popupInput}
                 />
               ))}
-              <select
-                name="ID_Laboratorio"
-                value={newProduct.ID_Laboratorio}
-                onChange={handleInputChange}
-                required
-              >
-                
-                {laboratorios.map((lab, index) => (
-                  <option key={index} value={lab}>
-                    {lab}
-                  </option>
-                ))}
-              </select>
-              <div>
+              <div className={styles.popupSelect}>
+                <FormControl sx={{ m: 1, minWidth: 320, minHeight:100 }} size="small" required>
+                  <InputLabel id="laboratorio-select-label">Laboratorio</InputLabel>
+                  <Select
+                    labelId="laboratorio-select-label"
+                    id="laboratorio-select"
+                    name="ID_Laboratorio"
+                    value={newProduct.ID_Laboratorio}
+                    label="Laboratorio"
+                    onChange={handleInputChange}
+                  >
+                    {laboratorios.map((lab, index) => (
+                      <MenuItem key={index} value={lab}>
+                        {lab}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
                 <button type="submit" className={styles.submitBtn}>
                   Agregar producto
                 </button>
               </div>
             </form>
           </div>
+
         </div>
       )}
 

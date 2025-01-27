@@ -1,38 +1,43 @@
 .addProductBtn {
   padding: 12px 20px;
   border-radius: 6px;
-  background: #4CAF50; /* Color del botón */
+  background: #4CAF50; 
   color: white;
   border: none;
   font-size: 16px;
   display: flex;
-  gap: 8px; /* Espacio entre el ícono y el texto */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra */
+  gap: 8px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
   transform: translateY(0);
   transition: transform 0.2s ease-in-out;
 }
 
-  /* Borde rojo border: 2px solid red !important;*/
   .popupForm {
     display: flex;
-    height: 60vh;  
-    flex-wrap: wrap;
-    justify-content: space-between; /* O space-around/space-evenly */
-    align-items: center;
-    gap: 10px; 
-
+    flex-wrap: wrap;        
+    gap: 20px;              
+    justify-content: space-between;
   }
 
   .popupInput {
-    flex-grow: 1; /* Hace que cada hijo crezca y ocupe el espacio disponible */
-    padding: 10px; /* Añadir algo de espacio dentro de los elementos */
-    text-align: center; /* Centrar el texto */
+    flex: 1 1 calc(50% - 20px); 
+    min-width: 250px;           
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  .popupSelect{
+    display: flex;
+    min-width: 250px; 
+    height: 60px;
+    flex: 1 1 calc(50% - 20px); 
     
+    gap: 60px;
   }
   
   .addProductBtn:hover {
-    transform: translateY(-3px); /* Efecto flotante al hacer hover */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Aumenta la sombra al hacer hover */
+    transform: translateY(-3px); 
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); 
   }
   
   .searchBtn {
@@ -62,21 +67,16 @@
     width: 350px;
     
   }
- 
-  /*  ESTE SE MODIFICO */
   .agregarB {
     display: flex;
-    justify-content: flex-end;  /* Centra el contenido dentro del contenedor */
-    align-items: center;      /* Centra verticalmente */
-    
+    justify-content: flex-end;  
+    align-items: center;      
     border-width: 2px;
-    padding: 0px;  /* Añade un poco de espacio alrededor */
-    position: relative;  /* Esto es importante para que los elementos dentro de él se posicionen de forma relativa */
-      /* Ajusta la altura según sea necesario */
+    padding: 0px;  
+    position: relative;  
     margin-bottom: 50px;
   }
 
-  /* ESTE SE MODIFICO */ 
   .cont {
     padding: 20px;
     margin-left: 300px;
@@ -84,20 +84,17 @@
     position: 'relative';
     
   }
-
-  /* ESTE SE MODIFICO */
   .searchContainer {
     display: flex;
     flex-direction: row;
     gap: 20px;
-     /* Borde rojo */
     padding: 0px; 
     margin-bottom: 20px;
   }
 
   .dataTableContainer {
     
-    margin-top: 10px; /* Añade un poco de espacio arriba */
+    margin-top: 10px; 
     
   
   }
@@ -119,10 +116,11 @@
   }
 
   .popupBox {
+    
     background-color: white;
-    padding: 30px;
+    padding: 20px;
     border-radius: 20px;
-    width: 600px;
+    width: 700px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
     position: relative;
   }
@@ -135,11 +133,11 @@
 
   .closeBtn {
     position: absolute;
-    top: 10px;
+    margin-right: 10px;
     right: 10px;
     background: none;
     border: none;
-    font-size: 20px;
+    font-size: 25px;
     cursor: pointer;
   }
   
@@ -163,10 +161,12 @@
   }
 
   .submitBtn {
-    grid-column: span 2;
-    padding: 12px 20px;
-    background-color: #4CAF50;
-    color: white;
+    margin-top: 10px;
+    gap: 80px;
+    padding: 12px ;
+    max-height: 40px;
+    background-color: #f7d118;
+    color: rgb(0, 0, 0);
     border: none;
     border-radius: 6px;
     font-size: 16px;
@@ -176,13 +176,3 @@
   .submitBtn:hover {
     background-color: #45a049;
   }
-  
-
-
-  /*
-  .popupForm {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-  }
-  */
