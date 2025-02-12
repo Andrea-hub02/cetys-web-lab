@@ -4,10 +4,10 @@ import Paper from '@mui/material/Paper';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 
-// Define las columnas basadas en los campos requeridos
+
 const columns: GridColDef[] = [
   { field: 'ID_Material', headerName: 'ID Material', width: 100 },
-  { field: 'ITEM', headerName: 'Item', width: 80 },
+  { field: 'TIPO_MATERIAL', headerName: 'Tipo Material', width: 80 },
   { field: 'ID_Laboratorio', headerName: 'ID Laboratorio', width: 130 },
   { field: 'DESCRIPCION', headerName: 'Descripción', width: 200 },
   { field: 'MODELO', headerName: 'Modelo', width: 120 },
