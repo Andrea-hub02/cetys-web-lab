@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import styles from '../styles/catalogo.module.css';
 import DataTable from '@/components/DataTable';
@@ -13,34 +13,49 @@ import { SelectChangeEvent } from '@mui/material';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 
+interface Material {
+  id_material: number;
+  id_laboratorio: string;
+  descripcion: string;
+  modelo: string;
+  numero_serie: string;
+  numero_inventario: string;
+  estado: string;
+  adquisicion: string;
+  existencia: number;
+  numero_prestamo: number;
+  ubicacion: string;
+  tipo_material: string;
+}
+
+interface RowData {
+  id: number;
+  ID_Material: number;
+  TIPO_MATERIAL: string;
+  ID_Laboratorio: string;
+  DESCRIPCION: string;
+  MODELO: string;
+  No_SERIE: string;
+  No_INVENTARIO: string;
+  ESTADO: string;
+  ADQUISICION: string;
+  EXISTENCIA: number;
+  No_PRESTAMO: number;
+  UBICACION: string;
+  IMAGEN: string;
+}
+
 const Catalogo = () => {
   const [selectedLab, setSelectedLab] = useState('');
   const [selectedTool, setSelectedTool] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [showPopup, setShowPopup] = useState(false);
+  const [rows, setRows] = useState<RowData[]>([]);
 
-  const [rows, setRows] = useState([
-    {
-      id: 1,
-      ID_Material: 101,
-      ITEM: 'A001',
-      ID_Laboratorio: 'Manofactura',
-      DESCRIPCION: 'Microscopio Óptico',
-      MODELO: 'BX53',
-      No_SERIE: '12345',
-      No_INVENTARIO: 'INV-001',
-      ESTADO: 'Activo',
-      ADQUISICION: '2020-05-10',
-      EXISTENCIA: 10,
-      No_PRESTAMO: 5,
-      UBICACION: 'Almacén 1',
-      IMAGEN: 'imagen1.png',
-    },
-  ]);
-
-  const [newProduct, setNewProduct] = useState({
-    ID_Material: '',
-    ITEM: '',
+  const [newProduct, setNewProduct] = useState<RowData>({
+    id: 0,
+    ID_Material: 0,
+    TIPO_MATERIAL: '',
     ID_Laboratorio: '',
     DESCRIPCION: '',
     MODELO: '',
@@ -48,8 +63,8 @@ const Catalogo = () => {
     No_INVENTARIO: '',
     ESTADO: '',
     ADQUISICION: '',
-    EXISTENCIA: '',
-    No_PRESTAMO: '',
+    EXISTENCIA: 0,
+    No_PRESTAMO: 0,
     UBICACION: '',
     IMAGEN: '',
   });
@@ -57,30 +72,58 @@ const Catalogo = () => {
   const laboratorios = ['Manofactura', 'Electronica', 'Mecatronica', 'Renovables', 'Metodos', 'Fisica'];
   const herramientas = ['Herramienta 1', 'Herramienta 2', 'Herramienta 3'];
 
-  const togglePopup = () => setShowPopup(!showPopup);
 
+  useEffect(() => {
+    fetch('/api/material')
+      .then((response) => response.json())
+      .then((data: Material[]) => {
+        const formattedData = data.map((item: Material) => ({
+          id: item.id_material,
+          ID_Material: item.id_material,
+          TIPO_MATERIAL: item.tipo_material,
+          ID_Laboratorio: String(item.id_laboratorio),
+          DESCRIPCION: item.descripcion,
+          MODELO: item.modelo,
+          No_SERIE: item.numero_serie,
+          No_INVENTARIO: item.numero_inventario,
+          ESTADO: item.estado,
+          ADQUISICION: item.adquisicion,
+          EXISTENCIA: item.existencia,
+          No_PRESTAMO: item.numero_prestamo,
+          UBICACION: item.ubicacion,
+          IMAGEN: '', 
+        }));
+        setRows(formattedData);
+      })
+      .catch((error) => console.error('Error fetching data:', error));
+  }, []);
+
+  
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement> | SelectChangeEvent<string>) => {
     const { name, value } = e.target;
     setNewProduct((prev) => ({ ...prev, [name]: value }));
   };
 
+  
   const handleAddProduct = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const formattedProduct = {
+    const formattedProduct: RowData = {
       ...newProduct,
-      ID_Material: parseInt(newProduct.ID_Material, 10) || 0,
-      EXISTENCIA: parseInt(newProduct.EXISTENCIA, 10) || 0,
-      No_PRESTAMO: parseInt(newProduct.No_PRESTAMO, 10) || 0,
+      id: rows.length + 1,
+      ID_Material: parseInt(newProduct.ID_Material.toString(), 10) || 0,
+      EXISTENCIA: parseInt(newProduct.EXISTENCIA.toString(), 10) || 0,
+      No_PRESTAMO: parseInt(newProduct.No_PRESTAMO.toString(), 10) || 0,
     };
 
-    setRows((prevRows) => [...prevRows, { id: prevRows.length + 1, ...formattedProduct }]);
+    setRows((prevRows) => [...prevRows, formattedProduct]);
     setShowPopup(false);
 
-    // Resetear formulario
+    
     setNewProduct({
-      ID_Material: '',
-      ITEM: '',
+      id: 0,
+      ID_Material: 0,
+      TIPO_MATERIAL: '',
       ID_Laboratorio: '',
       DESCRIPCION: '',
       MODELO: '',
@@ -88,21 +131,23 @@ const Catalogo = () => {
       No_INVENTARIO: '',
       ESTADO: '',
       ADQUISICION: '',
-      EXISTENCIA: '',
-      No_PRESTAMO: '',
+      EXISTENCIA: 0,
+      No_PRESTAMO: 0,
       UBICACION: '',
       IMAGEN: '',
     });
   };
 
+  
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Buscar:', searchTerm);
   };
 
+  
   const filteredData = rows.filter((row) => {
-    const matchesLab = selectedLab ? row.ID_Laboratorio.includes(selectedLab) : true;
-    const matchesTool = selectedTool ? row.ITEM.includes(selectedTool) : true;
+    const matchesLab = selectedLab ? String(row.ID_Laboratorio).includes(selectedLab) : true;
+    const matchesTool = selectedTool ? row.TIPO_MATERIAL.includes(selectedTool) : true;
     const matchesSearch = searchTerm
       ? row.DESCRIPCION.toLowerCase().includes(searchTerm.toLowerCase())
       : true;
@@ -112,7 +157,7 @@ const Catalogo = () => {
   return (
     <div className={styles.cont}>
       <div className={styles.agregarB}>
-        <button type="button" className={styles.addProductBtn} onClick={togglePopup}>
+        <button type="button" className={styles.addProductBtn} onClick={() => setShowPopup(true)}>
           <FaPlus />
           Agregar producto
         </button>
@@ -121,13 +166,13 @@ const Catalogo = () => {
       {showPopup && (
         <div className={styles.popupOverlay}>
           <div className={styles.popupBox}>
-            <button className={styles.closeBtn} onClick={togglePopup}>
-            <HighlightOffIcon sx={{ fontSize: 40 }} /> 
-              </button>
+            <button className={styles.closeBtn} onClick={() => setShowPopup(false)}>
+              <HighlightOffIcon sx={{ fontSize: 40 }} />
+            </button>
             <h2>Agregar producto</h2>
             <form className={styles.popupForm} onSubmit={handleAddProduct}>
               {[
-                { name: 'ID_Material', placeholder: 'ID Material', type: 'text' },
+                { name: 'ID_Material', placeholder: 'ID Material', type: 'number' },
                 { name: 'ITEM', placeholder: 'Item', type: 'text' },
                 { name: 'DESCRIPCION', placeholder: 'Descripción', type: 'text' },
                 { name: 'MODELO', placeholder: 'Modelo', type: 'text' },
@@ -140,7 +185,7 @@ const Catalogo = () => {
                 { name: 'UBICACION', placeholder: 'Ubicación', type: 'text' },
                 { name: 'IMAGEN', placeholder: 'Imagen (URL)', type: 'text' },
               ].map((field, index) => (
-                <input 
+                <input
                   key={index}
                   type={field.type}
                   name={field.name}
@@ -152,7 +197,7 @@ const Catalogo = () => {
                 />
               ))}
               <div className={styles.popupSelect}>
-                <FormControl sx={{ m: 1, minWidth: 320, minHeight:100 }} size="small" required>
+                <FormControl sx={{ m: 1, minWidth: 320, minHeight: 100 }} size="small" required>
                   <InputLabel id="laboratorio-select-label">Laboratorio</InputLabel>
                   <Select
                     labelId="laboratorio-select-label"
@@ -175,7 +220,6 @@ const Catalogo = () => {
               </div>
             </form>
           </div>
-
         </div>
       )}
 
