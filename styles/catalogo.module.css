@@ -79,11 +79,12 @@
 
   .cont {
     padding: 20px;
-    margin-left: 300px;
+    margin-left: 500px;
     justify-content: flex-end;
     position: 'relative';
     
   }
+  
   .searchContainer {
     display: flex;
     flex-direction: row;

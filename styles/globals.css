@@ -24,7 +24,6 @@ body {
   height: 100vh;
   padding: 1rem;
   display: flex;
-  height: 100vh;
   justify-content: center;
   align-items: center;
   background: linear-gradient(
@@ -32,6 +31,8 @@ body {
           var(--gradient-start),
           var(--gradient-end)
       );
+  background-size: cover;
+  background-attachment: fixed;
 }
 
 .socials-row {
@@ -236,11 +237,12 @@ body {
 
 body,
 html {
+    height: 100%;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    width: 100%;
     font-family: Arial, sans-serif;
-    background-color: white;
+    box-sizing: border-box;
 }
 
 .container {
