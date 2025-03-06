@@ -54,7 +54,7 @@ const Catalogo = () => {
 
   const [newProduct, setNewProduct] = useState<RowData>({
     id: 0,
-    ID_Material: 0,
+    ID_Material: NaN,
     TIPO_MATERIAL: '',
     ID_Laboratorio: '',
     DESCRIPCION: '',
@@ -63,8 +63,8 @@ const Catalogo = () => {
     No_INVENTARIO: '',
     ESTADO: '',
     ADQUISICION: '',
-    EXISTENCIA: 0,
-    No_PRESTAMO: 0,
+    EXISTENCIA: NaN,
+    No_PRESTAMO: NaN,
     UBICACION: '',
     IMAGEN: '',
   });
