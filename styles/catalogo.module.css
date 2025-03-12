@@ -84,6 +84,7 @@
     position: 'relative';
     
   }
+  
   .searchContainer {
     display: flex;
     flex-direction: row;

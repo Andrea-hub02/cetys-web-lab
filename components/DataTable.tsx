@@ -29,7 +29,7 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
   const paginationModel = { page: 0, pageSize: 5 };
 
   return (
-    <Paper sx={{ height: 400, width: 1700 }}>
+    <Paper sx={{ height: 400, width: 1500 }}>
       <DataGrid
         rows={data}
         columns={columns}
