@@ -6,12 +6,19 @@ import Styles from "../styles/Mantenimiento.module.css";
 const Mantenimiento = () => {
     const [isOpen, setIsOpen] = useState(false); // Estado para el calendario
     const [isPopupOpen, setIsPopupOpen] = useState(false); // Estado para el pop-up de mantenimiento
-    const [material, setMaterial] = useState(null); // Estado del material buscado
+    const [material, setMaterial] = useState<Material | null>(null); // Estado del material buscado
     const [estado, setEstado] = useState("funcional"); // Estado inicial del material
     const [prestamo, setPrestamo] = useState("disponible"); // Estado inicial del préstamo
     const [idBusqueda, setIdBusqueda] = useState(""); // ID ingresado
-    const [selectedDate, setSelectedDate] = useState(null); // Fecha seleccionada del calendario
-    const [mantenimientos, setMantenimientos] = useState({
+    const [selectedDate, setSelectedDate] = useState<string | null>(null); // Fecha seleccionada del calendario
+    interface MantenimientoItem {
+        id: string;
+        nombre: string;
+        estado: string;
+        mantenimiento: string;
+    }
+
+    const [mantenimientos, setMantenimientos] = useState<Record<string, MantenimientoItem[]>>({
         "2024-11-10": [
             { id: "123", nombre: "Microscopio", estado: "funcional", mantenimiento: "completo" },
             { id: "124", nombre: "Telescopio", estado: "dañado", mantenimiento: "incompleto" },
@@ -20,7 +27,14 @@ const Mantenimiento = () => {
             { id: "125", nombre: "Proyector", estado: "funcional", mantenimiento: "completo" },
         ],
     });
-    const [materialesCreados, setMaterialesCreados] = useState([]); // Lista de materiales creados
+    interface Material {
+        id: string;
+        nombre: string;
+        estado: string;
+        prestamo: string;
+    }
+
+    const [materialesCreados, setMaterialesCreados] = useState<Material[]>([]); // Lista de materiales creados
 
     const toggleCalendar = () => {
         setIsOpen(!isOpen); // Alterna el calendario
@@ -108,14 +122,13 @@ const Mantenimiento = () => {
                         <table className={Styles.tabla}>
                             <thead>
                                 <tr>
-                                    <th>ID</th>
                                     <th>Nombre</th>
                                     <th>Estado</th>
                                     <th>Mantenimiento</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {mantenimientos[selectedDate].map((item, index) => (
+                                {mantenimientos[selectedDate].map((item, index: number) => (
                                     <tr key={index}>
                                         <td>{item.id}</td>
                                         <td>{item.nombre}</td>
