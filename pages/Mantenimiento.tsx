@@ -1,225 +1,115 @@
-import React, { useState } from "react";
-import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css";
-import Styles from "../styles/Mantenimiento.module.css";
+// pages/Mantenimiento.tsx
+import React, { useState } from 'react';
+import { NextPage } from 'next';
+import { Calendar } from 'react-modern-calendar-datepicker';
+import 'react-modern-calendar-datepicker/lib/DatePicker.css';
+import styles from '../styles/Mantenimiento.module.css';
 
-const Mantenimiento = () => {
-    const [isOpen, setIsOpen] = useState(false); // Estado para el calendario
-    const [isPopupOpen, setIsPopupOpen] = useState(false); // Estado para el pop-up de mantenimiento
-    const [material, setMaterial] = useState<Material | null>(null); // Estado del material buscado
-    const [estado, setEstado] = useState("funcional"); // Estado inicial del material
-    const [prestamo, setPrestamo] = useState("disponible"); // Estado inicial del préstamo
-    const [idBusqueda, setIdBusqueda] = useState(""); // ID ingresado
-    const [selectedDate, setSelectedDate] = useState<string | null>(null); // Fecha seleccionada del calendario
-    interface MantenimientoItem {
-        id: string;
-        nombre: string;
-        estado: string;
-        mantenimiento: string;
-    }
+interface MaintenanceRecord {
+  idMantenimiento: string;
+  equipo: string;
+  fecha: Date;
+  descripcion: string;
+}
 
-    const [mantenimientos, setMantenimientos] = useState<Record<string, MantenimientoItem[]>>({
-        "2024-11-10": [
-            { id: "123", nombre: "Microscopio", estado: "funcional", mantenimiento: "completo" },
-            { id: "124", nombre: "Telescopio", estado: "dañado", mantenimiento: "incompleto" },
-        ],
-        "2024-11-15": [
-            { id: "125", nombre: "Proyector", estado: "funcional", mantenimiento: "completo" },
-        ],
-    });
-    interface Material {
-        id: string;
-        nombre: string;
-        estado: string;
-        prestamo: string;
-    }
+const Mantenimiento: NextPage = () => {
+  // Registros de mantenimiento de ejemplo
+  const [maintenanceRecords, setMaintenanceRecords] = useState<MaintenanceRecord[]>([
+    {
+      idMantenimiento: '001',
+      equipo: 'PC-1234',
+      fecha: new Date(2025, 3, 2),
+      descripcion: 'Cambio de disco duro',
+    },
+    {
+      idMantenimiento: '002',
+      equipo: 'PC-5678',
+      fecha: new Date(2025, 3, 2),
+      descripcion: 'Limpieza de ventiladores',
+    },
+    {
+      idMantenimiento: '003',
+      equipo: 'PC-ABCD',
+      fecha: new Date(2025, 3, 5),
+      descripcion: 'Cambio de memoria RAM',
+    },
+  ]);
 
-    const [materialesCreados, setMaterialesCreados] = useState<Material[]>([]); // Lista de materiales creados
+  // react-modern-calendar-datepicker usa un objeto { year, month, day }
+  const [selectedDay, setSelectedDay] = useState<any>(null);
 
-    const toggleCalendar = () => {
-        setIsOpen(!isOpen); // Alterna el calendario
-    };
+  const handleDayChange = (day: any) => {
+    setSelectedDay(day);
+  };
 
-    const togglePopup = () => {
-        setIsOpen(false); // Cierra el calendario si está abierto
-        setIsPopupOpen(!isPopupOpen); // Alterna el pop-up de mantenimiento
-    };
+  // Convertimos el objeto seleccionado a un objeto Date
+  const selectedDate = selectedDay
+    ? new Date(selectedDay.year, selectedDay.month - 1, selectedDay.day)
+    : new Date();
 
-    const buscarMaterial = () => {
-        // Simular búsqueda en base de datos
-        if (idBusqueda === "123") {
-            setMaterial({ id: "123", nombre: "Microscopio", estado: "funcional", prestamo: "disponible" });
-        } else if (idBusqueda === "124") {
-            setMaterial({ id: "124", nombre: "Telescopio", estado: "dañado", prestamo: "ocupado" });
-        } else {
-            alert("Material no encontrado");
-            setMaterial(null);
-        }
-    };
+  // Filtramos los registros para la fecha seleccionada
+  const dailyRecords = maintenanceRecords.filter(
+    (record) => record.fecha.toDateString() === selectedDate.toDateString()
+  );
 
-    const crearMaterial = () => {
-        if (material) {
-            // Agregar material a la lista de materiales creados
-            setMaterialesCreados((prev) => [...prev, { ...material, estado, prestamo }]);
-            // Limpiar el estado actual del material
-            setMaterial(null);
-            setEstado("funcional"); // Resetear estado
-            setPrestamo("disponible"); // Resetear préstamo
-            setIdBusqueda(""); // Resetea el campo de búsqueda
-            setIsPopupOpen(false); // Cierra el pop-up
-        }
-    };
+  return (
+    <div className={styles.container}>
+      <div className={styles.titleContainer}>
+        <h1 className={styles.title}>Bienvenido a Mantenimiento</h1>
+      </div>
 
-    const marcarMantenimientos = ({ date }: { date: Date }) => {
-        const formattedDate = date.toISOString().split("T")[0];
-        return mantenimientos[formattedDate] ? Styles.highlight : null;
-    };
-
-    const handleDayClick = (value: Date) => {
-        const formattedDate = value.toISOString().split("T")[0];
-        if (mantenimientos[formattedDate]) {
-            setSelectedDate(formattedDate);
-        } else {
-            setSelectedDate(null);
-        }
-    };
-
-    const resetSelectedDate = () => {
-        setSelectedDate(null); // Resetea la fecha seleccionada
-    };
-
-    return (
-        <div>
-            <div className={Styles.mainContainer} style={{ maxHeight: selectedDate ? "800px" : "500px" }}>
-                <h1>Bienvenido a Mantenimiento</h1>
-                <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
-                    <button onClick={toggleCalendar} className={Styles.calendarButton}>
-                        Calendario
-                    </button>
-                    <button onClick={togglePopup} className={Styles.mantenimientoButton}>
-                        Realizar mantenimiento
-                    </button>
-                </div>
-                {isOpen && (
-                    <div className={Styles.calendarPopup}>
-                        <button onClick={toggleCalendar} className={Styles.closeButton}>
-                            Cerrar
-                        </button>
-                        <Calendar
-                            tileClassName={marcarMantenimientos}
-                            onClickDay={handleDayClick}
-                        />
-                    </div>
-                )}
-                {selectedDate && (
-                    <div className={Styles.tablaContainer}>
-                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                            <h2>Mantenimientos del {selectedDate}</h2>
-                            <button onClick={resetSelectedDate} className={Styles.closeButton}>
-                                Cerrar detalles
-                            </button>
-                        </div>
-                        <table className={Styles.tabla}>
-                            <thead>
-                                <tr>
-                                    <th>Nombre</th>
-                                    <th>Estado</th>
-                                    <th>Mantenimiento</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {mantenimientos[selectedDate].map((item, index: number) => (
-                                    <tr key={index}>
-                                        <td>{item.id}</td>
-                                        <td>{item.nombre}</td>
-                                        <td>{item.estado === "funcional" ? "Funcional" : "Dañado"}</td>
-                                        <td>{item.mantenimiento === "completo" ? "Completo" : "Incompleto"}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                )}
-                {isPopupOpen && (
-                    <div className={Styles.popup}>
-                        <button onClick={togglePopup} className={Styles.closeButton}>
-                            Cerrar
-                        </button>
-                        <h2>Buscar Material</h2>
-                        <input
-                            type="text"
-                            placeholder="Ingrese ID del material"
-                            value={idBusqueda}
-                            onChange={(e) => setIdBusqueda(e.target.value)}
-                            className={Styles.inputField}
-                        />
-                        <button onClick={buscarMaterial} className={Styles.searchButton}>
-                            Buscar
-                        </button>
-                        {material && (
-                            <div className={Styles.materialInfo}>
-                                <h3>Información del material</h3>
-                                <p>ID: {material.id}</p>
-                                <p>Nombre: {material.nombre}</p>
-                                <div className={Styles.estado}>
-                                    <label>
-                                        Estado:
-                                        <input
-                                            type="checkbox"
-                                            checked={estado === "funcional"}
-                                            onChange={() => setEstado(estado === "funcional" ? "dañado" : "funcional")}
-                                        />
-                                        {estado === "funcional" ? "Funcional" : "Dañado"}
-                                    </label>
-                                </div>
-                                <div className={Styles.estado}>
-                                    <label>
-                                        Préstamo:
-                                        <input
-                                            type="checkbox"
-                                            checked={prestamo === "disponible"}
-                                            onChange={() =>
-                                                setPrestamo(prestamo === "disponible" ? "ocupado" : "disponible")
-                                            }
-                                        />
-                                        {prestamo === "disponible" ? "Disponible" : "Ocupado"}
-                                    </label>
-                                </div>
-                                <button onClick={crearMaterial} className={Styles.createButton}>
-                                    Crear
-                                </button>
-                            </div>
-                        )}
-                    </div>
-                )}
-            </div>
-            {materialesCreados.length > 0 && (
-                <div className={Styles.createdContainer}>
-                    <h2>Materiales Creados</h2>
-                    <table className={Styles.tabla}>
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Nombre</th>
-                                <th>Estado</th>
-                                <th>Préstamo</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {materialesCreados.map((item, index) => (
-                                <tr key={index}>
-                                    <td>{item.id}</td>
-                                    <td>{item.nombre}</td>
-                                    <td>{item.estado === "funcional" ? "Funcional" : "Dañado"}</td>
-                                    <td>{item.prestamo === "disponible" ? "Disponible" : "Ocupado"}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            )}
+      <div className={styles.mainLayout}>
+        {/* Contenedor del calendario */}
+        <div className={styles.calendarContainer}>
+          <Calendar
+            value={selectedDay}
+            onChange={handleDayChange}
+            calendarClassName="custom-calendar" // Puedes usar esta clase para personalizar aún más en tu global CSS
+            colorPrimary="black" // Color primario para destacar el día seleccionado
+            shouldHighlightWeekends
+          />
         </div>
-    );
+
+        {/* Panel dinámico: tabla o mensaje */}
+        <div className={styles.panelDinamico}>
+          {dailyRecords.length === 0 ? (
+            <p className={styles.noRecords}>
+              No hay registros de mantenimiento para este día...
+            </p>
+          ) : (
+            <table className={styles.table}>
+              <thead>
+                <tr>
+                  <th className={styles.tableHeader}>ID</th>
+                  <th className={styles.tableHeader}>Equipo</th>
+                  <th className={styles.tableHeader}>Fecha</th>
+                  <th className={styles.tableHeader}>Descripción</th>
+                </tr>
+              </thead>
+              <tbody>
+                {dailyRecords.map((record) => (
+                  <tr key={record.idMantenimiento}>
+                    <td className={styles.tableCell}>{record.idMantenimiento}</td>
+                    <td className={styles.tableCell}>{record.equipo}</td>
+                    <td className={styles.tableCell}>
+                      {record.fecha.toLocaleDateString()}
+                    </td>
+                    <td className={styles.tableCell}>{record.descripcion}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+      </div>
+
+      <div className={styles.btnContainer}>
+        <button className={styles.btnRealizarMantenimiento}>
+          Realizar Mantenimiento
+        </button>
+      </div>
+    </div>
+  );
 };
 
 export default Mantenimiento;
