@@ -60,7 +60,6 @@ const Mantenimiento: NextPage = () => {
 
       <div className={styles.mainLayout}>
         {/* Contenedor del calendario */}
-        <div className={styles.calendarContainer}>
           <Calendar
             value={selectedDay}
             onChange={handleDayChange}
@@ -68,7 +67,6 @@ const Mantenimiento: NextPage = () => {
             colorPrimary="black" // Color primario para destacar el día seleccionado
             shouldHighlightWeekends
           />
-        </div>
 
         {/* Panel dinámico: tabla o mensaje */}
         <div className={styles.panelDinamico}>
